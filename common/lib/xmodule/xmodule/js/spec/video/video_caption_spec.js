@@ -72,12 +72,6 @@
                     });
                 });
 
-                it('bind window resize event', function () {
-                    expect($(window)).toHandleWith(
-                        'resize', state.videoCaption.resize
-                    );
-                });
-
                 it('bind the hide caption button', function () {
                     expect($('.hide-subtitles')).toHandleWith(
                         'click', state.videoCaption.toggle

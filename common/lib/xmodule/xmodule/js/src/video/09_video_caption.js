@@ -135,7 +135,6 @@ function () {
         var self = this,
             Caption = this.videoCaption;
 
-        $(window).bind('resize', Caption.resize);
         Caption.hideSubtitlesEl.on({
             'click': Caption.toggle
         });
@@ -757,8 +756,12 @@ function () {
             });
         }
 
-        if (this.resizer && !this.isFullScreen) {
-            this.resizer.alignByWidthOnly();
+        if (this.resizer) {
+            if (this.isFullScreen) {
+                this.resizer.setMode('both');
+            } else {
+                this.resizer.alignByWidthOnly();
+            }
         }
 
         this.videoCaption.setSubtitlesHeight();
@@ -772,17 +775,8 @@ function () {
     }
 
     function captionHeight() {
-        var paddingTop;
-
         if (this.isFullScreen) {
-            paddingTop = parseInt(
-                this.videoCaption.subtitlesEl.css('padding-top'), 10
-            );
-
-            return $(window).height() -
-                this.videoControl.el.height() -
-                0.5 * this.videoControl.sliderEl.height() -
-                2 * paddingTop;
+            return this.container.height() - this.videoControl.height;
         } else {
             return this.container.height();
         }

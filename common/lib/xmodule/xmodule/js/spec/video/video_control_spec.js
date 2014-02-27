@@ -104,6 +104,12 @@
             });
         });
 
+        it('Controls height is actual on switch to fullscreen', function () {
+            state = jasmine.initializePlayer();
+            $(state.el).trigger('fullscreen');
+            expect(state.videoControl.height).toBe(150);
+        });
+
         describe('play', function () {
             beforeEach(function () {
                 state = jasmine.initializePlayer();

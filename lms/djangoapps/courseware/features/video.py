@@ -22,29 +22,27 @@ HTML5_SOURCES = [
     'https://s3.amazonaws.com/edx-course-videos/edx-intro/edX-FA12-cware-1_100.webm',
     'https://s3.amazonaws.com/edx-course-videos/edx-intro/edX-FA12-cware-1_100.ogv',
 ]
+
 HTML5_SOURCES_INCORRECT = [
     'https://s3.amazonaws.com/edx-course-videos/edx-intro/edX-FA12-cware-1_100.mp99',
 ]
+
 VIDEO_BUTTONS = {
     'CC': '.hide-subtitles',
     'volume': '.volume',
     'play': '.video_control.play',
     'pause': '.video_control.pause',
+    'fullscreen': '.add-fullscreen',
 }
+
 VIDEO_MENUS = {
     'language': '.lang .menu',
     'speed': '.speed .menu',
 }
 
-VIDEO_BUTTONS = {
-    'CC': '.hide-subtitles',
-    'volume': '.volume',
-    'play': '.video_control.play',
-    'pause': '.video_control.pause',
-}
-
 coursenum = 'test_course'
 sequence = {}
+
 
 @step('when I view the (.*) it does not have autoplay enabled$')
 def does_not_autoplay(_step, video_type):
@@ -53,10 +51,7 @@ def does_not_autoplay(_step, video_type):
 
 @step('the course has a Video component in (.*) mode(?:\:)?$')
 def view_video(_step, player_mode):
-
     i_am_registered_for_the_course(_step, coursenum)
-
-    # Make sure we have a video
     add_video_to_course(coursenum, player_mode.lower(), _step.hashes)
     visit_scenario_item('SECTION')
 
@@ -127,14 +122,16 @@ def add_video_to_course(course, player_mode, hashes, display_name='Video'):
     if hashes:
         kwargs['metadata'].update(hashes[0])
 
+    course_location = world.scenario_dict['COURSE'].location
+
+    if 'sub' in kwargs['metadata']:
+        _upload_file(kwargs['metadata']['sub'], 'en', course_location)
+
     if 'transcripts' in kwargs['metadata']:
         kwargs['metadata']['transcripts'] = json.loads(kwargs['metadata']['transcripts'])
 
-        if 'sub' in kwargs['metadata']:
-            _upload_file(kwargs['metadata']['sub'], 'en', world.scenario_dict['COURSE'].location)
-
         for lang, videoId in kwargs['metadata']['transcripts'].items():
-            _upload_file(videoId, lang, world.scenario_dict['COURSE'].location)
+            _upload_file(videoId, lang, course_location)
 
     world.scenario_dict['VIDEO'] = world.ItemFactory.create(**kwargs)
 
@@ -157,7 +154,7 @@ def video_is_rendered(_step, mode):
 
 @step('all sources are correct$')
 def all_sources_are_correct(_step):
-    elements = world.css_find('.video video source')
+    elements = world.css_find('.video-player video source')
     sources = [source['src'].split('?')[0] for source in elements]
 
     assert set(sources) == set(HTML5_SOURCES)
@@ -227,11 +224,6 @@ def select_language(_step, code):
     world.wait_for_ajax_complete()
 
 
-@step('I click on video button "([^"]*)"$')
-def click_button(_step, button):
-    world.css_find(VIDEO_BUTTONS[button]).click()
-
-
 def _upload_file(videoId, lang, location):
     if lang == 'en':
         filename = 'subs_{0}.srt.sjson'.format(videoId)
@@ -274,9 +266,7 @@ def _change_video_speed(speed):
 
 
 @step('I click video button "([^"]*)"$')
-def click_button_video(_step, button_type):
-    world.wait_for_ajax_complete()
-    button = button_type.strip()
+def click_button(_step, button):
     world.css_click(VIDEO_BUTTONS[button])
 
 
@@ -293,6 +283,57 @@ def seek_video_to_n_seconds(_step, seconds):
     time = float(seconds.strip())
     jsCode = "$('.video').data('video-player-state').videoPlayer.onSlideSeek({{time: {0:f}}})".format(time)
     world.browser.execute_script(jsCode)
+
+
+@step('I see video aligned correctly (with(?:out)?) enabled transcript$')
+def video_alignment(_step, transcript_visibility):
+    # Width of the video container in css equal 75% of window if transcript enabled
+    wrapper_width = 75 if transcript_visibility == "with" else 100
+    initial = _get_window_dimensions()
+
+    _set_window_dimensions(300, 600)
+    real, expected = _get_all_dimensions()
+
+    width = round(100 * real['width']/expected['width']) == wrapper_width
+
+    _set_window_dimensions(600, 300)
+    real, expected = _get_all_dimensions()
+
+    height = abs(expected['height'] - real['height']) <= 5
+
+    # Restore initial window size
+    _set_window_dimensions(
+        initial['width'], initial['height']
+    )
+
+    assert all([width, height])
+
+
+def _get_all_dimensions():
+    video = _get_dimensions('.video-player iframe, .video-player video')
+    wrapper = _get_dimensions('.tc-wrapper')
+    controls = _get_dimensions('.video-controls')
+    progress_slider = _get_dimensions('.video-controls > .slider')
+
+    expected = dict(wrapper)
+    expected['height'] -= controls['height'] + 0.5 * progress_slider['height']
+
+    return (video, expected)
+
+
+def _get_dimensions(selector):
+    element = world.css_find(selector).first
+    return element._element.size
+
+
+def _get_window_dimensions():
+    return world.browser.driver.get_window_size()
+
+
+def _set_window_dimensions(width, height):
+    world.browser.driver.set_window_size(width, height)
+    # Wait 200 ms when JS finish resizing
+    world.wait(0.2)
 
 
 def _open_menu(menu):
