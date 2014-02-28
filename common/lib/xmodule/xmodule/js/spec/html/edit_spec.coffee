@@ -93,7 +93,7 @@ describe 'HTMLEditingDescriptor', ->
         content: 'not set'
         startContent: 'not set',
         focus: () -> true
-        isDirty: () -> not @isNotDirty
+        isDirty: () -> @isNotDirty
         setContent: (x) -> @content = x
         getContent: -> @content
 
@@ -113,7 +113,7 @@ describe 'HTMLEditingDescriptor', ->
         content: 'not set'
         startContent: 'not set',
         focus: () -> true
-        isDirty: () -> not @isNotDirty
+        isDirty: () -> @isNotDirty
         setContent: (x) -> @content = x
         getContent: -> @content
 
