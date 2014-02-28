@@ -1,3 +1,8 @@
+"""
+This is a service-like API that assigns tracks which groups users are in for various
+user partitions.  It uses the user_service key/value store provided by the LMS runtime to
+persist the assignments.
+"""
 import random
 from abc import ABCMeta, abstractproperty
 
@@ -48,12 +53,12 @@ class PartitionService(object):
         if user_partition is None:
             raise ValueError(
                 "Configuration problem!  No user_partition with id {0} "
-                "in course {1}".format(user_partition_id, self._course_id))
+                "in course {1}".format(user_partition_id, self._course_id)
+            )
 
         group_id = self._get_group(user_partition)
 
         return group_id
-
 
     def _get_user_partition(self, user_partition_id):
         """
@@ -69,14 +74,12 @@ class PartitionService(object):
 
         return None
 
-
     def _key_for_partition(self, user_partition):
         """
         Returns the key to use to look up and save the user's group for a particular
         condition.  Always use this function rather than constructing the key directly.
         """
         return 'xblock.partition_service.partition_{0}'.format(user_partition.id)
-
 
     def _get_group(self, user_partition):
         """
@@ -88,9 +91,10 @@ class PartitionService(object):
         scope = self._user_tags_service.COURSE
 
         group_id = self._user_tags_service.get_tag(scope, key)
+        partition_group_ids = [group.id for group in user_partition.groups]
 
-        if group_id is not None:
-            # TODO: check whether this id is valid.  If not, create a new one.
+        # If a valid group id has been saved already, return it
+        if group_id is not None and group_id in partition_group_ids:
             return group_id
 
         # TODO: what's the atomicity of the get above and the save here?  If it's not in a
@@ -104,7 +108,8 @@ class PartitionService(object):
         # have the first transaction finish, and pick a different group in a
         # different process.)
 
-        # otherwise, we need to pick one, save it, then return it
+        # If a group id hasn't yet been saved, or the saved group id is invalid,
+        # we need to pick one, save it, then return it
 
         # TODO: had a discussion in arch council about making randomization more
         # deterministic (e.g. some hash).  Could do that, but need to be careful not
@@ -128,4 +133,3 @@ class PartitionService(object):
         self._track_function('edx.split_test.assigned_user_to_partition', event_info)
 
         return group.id
-

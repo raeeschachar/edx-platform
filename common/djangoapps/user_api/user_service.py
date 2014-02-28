@@ -4,7 +4,7 @@ just in-process.  Exposes global and per-course key-value pairs for users.
 
 Implementation note:
 Stores global metadata using the UserPreference model, and per-course metadata using the
-UserCourseMetadata model.
+UserCourseTags model.
 """
 
 from user_api.models import UserCourseTags

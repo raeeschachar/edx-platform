@@ -1,3 +1,9 @@
+"""Defines ``Group`` and ``UserPartition`` models for partitioning"""
+
+## We use ``id`` in this file as the IDs of our Groups and UserPartitions,
+## which Pylint disapproves of.
+# pylint: disable=invalid-name, redefined-builtin
+
 
 class Group(object):
     """
@@ -7,6 +13,7 @@ class Group(object):
     # in case we want to add to this class, a version will be handy
     # for deserializing old versions.  (This will be serialized in courses)
     VERSION = 1
+
     def __init__(self, id, name):
         self.id = id
         self.name = name
@@ -22,7 +29,6 @@ class Group(object):
                 "name": self.name,
                 "version": Group.VERSION}
 
-
     @staticmethod
     def from_json(value):
         """
@@ -34,6 +40,7 @@ class Group(object):
         Raises TypeError if the value doesn't have the right keys.
         """
         def check(key):
+            """Checks that ``key`` is present as a key in ``value``"""
             if key not in value:
                 raise TypeError("Group dict {0} missing value key '{1}'".format(
                     value, key))
@@ -66,7 +73,6 @@ class UserPartition(object):
         self.description = description
         self.groups = groups
 
-
     def to_json(self):
         """
         'Serialize' to a json-serializable representation.
@@ -80,7 +86,6 @@ class UserPartition(object):
                 "groups": [g.to_json() for g in self.groups],
                 "version": UserPartition.VERSION}
 
-
     @staticmethod
     def from_json(value):
         """
@@ -92,6 +97,7 @@ class UserPartition(object):
         Raises TypeError if the value doesn't have the right keys.
         """
         def check(key):
+            """Checks that ``key`` is present as a key in ``value``"""
             if key not in value:
                 raise TypeError("UserPartition dict {0} missing value key '{1}'"
                                 .format(value, key))
@@ -107,6 +113,6 @@ class UserPartition(object):
         groups = [Group.from_json(g) for g in value["groups"]]
 
         return UserPartition(value["id"],
-                                      value["name"],
-                                      value["description"],
-                                      groups)
+                             value["name"],
+                             value["description"],
+                             groups)
