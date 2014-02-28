@@ -23,11 +23,10 @@ from xblock.exceptions import NoSuchHandlerError
 from xblock.fields import Scope
 from xblock.plugin import PluginMissingError
 from xblock.runtime import Mixologist
-from xmodule.modulestore import prefer_xmodules
 
 from lms.lib.xblock.runtime import unquote_slashes
 
-from contentstore.utils import get_lms_link_for_item, compute_unit_state, UnitState, get_modulestore
+from contentstore.utils import get_lms_link_for_item, compute_unit_state, UnitState
 
 from models.settings.course_grading import CourseGradingModel
 
