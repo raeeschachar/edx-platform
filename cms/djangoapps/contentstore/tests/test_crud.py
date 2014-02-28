@@ -1,5 +1,4 @@
 import unittest
-from xblock.core import XBlock
 from django.conf import settings
 
 from xmodule import templates
@@ -12,6 +11,7 @@ from xmodule.modulestore.locator import CourseLocator, BlockUsageLocator, LocalI
 from xmodule.modulestore.exceptions import ItemNotFoundError
 from xmodule.html_module import HtmlDescriptor
 from xmodule.modulestore import inheritance
+from xblock.core import XBlock
 
 
 class TemplateTests(unittest.TestCase):
