@@ -9,106 +9,17 @@
 Contents
 ##########
 
-.. toctree::
-   :maxdepth: 1
-
-
-****************
-Get Started
-****************
-
+Introduction text
 
 .. toctree::
-   :maxdepth: 1
+   :numbered:
+   :maxdepth: 2
 
    read_me
    change_log
-   accounts
-   get_started
-
-****************
-Build a Course
-****************
-
-
-.. toctree::
-   :maxdepth: 1
-
-   create_new_course
-   establish_grading_policy
-   organizing_course
-   export_import_course
-   appendices/a
-   appendices/b
-   glossary
-
-********************************
-Create Course Content
-********************************
-
-
-.. toctree::
-   :maxdepth: 1
-
-   accessibility
-   create_html_component
-   create_video
-   create_discussion
-
-********************************
-Build Problems
-********************************
-
-
-.. toctree::
-   :maxdepth: 1
-
-   create_problem_component
-   common_problems
-   advanced_problems
-   specialized_problems
-   external_graders
-   open_response_assessment
-   ora_students
-   appendices/f
-   appendices/g
-
-********************************
-Add Tools to Your Course
-********************************
-
-
-.. toctree::
-   :maxdepth: 1
-
-   google_hangouts
-   tools
-   additional_tools
-   set_content_releasedates
-   view_course_content
-
-
-
-
-   
-
-
-********************************
-Run Your Course
-********************************
-
-
-.. toctree::
-   :maxdepth: 1
-
-   discussions
-   discussion_guidance_moderators
-   course_data
-   course_enrollment
-   course_staffing
-   beta_testing
-   course_student
-   course_grades
-   checking_student_progress
-   appendices/c
-
+   getting_started_index
+   build_course_index
+   create_content_index
+   build_problems_index
+   tools_index
+   run_course_index
