@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from user_api import user_service
 from xmodule.modulestore.django import modulestore
 from xmodule.x_module import ModuleSystem
+from xmodule.partitions.partitions_service import PartitionService
 
 
 def _quote_slashes(match):
@@ -111,7 +112,7 @@ class LmsHandlerUrls(object):
         })
 
 
-class LmsUserPartitions(object):
+class LmsPartitionService(PartitionService):
     """
     Another runtime mixin that provides access to the student partitions defined on the
     course.
@@ -122,12 +123,12 @@ class LmsUserPartitions(object):
 
     """
     @property
-    def user_partitions(self):
-        course = modulestore().get_course(self.course_id)
+    def course_partitions(self):
+        course = modulestore().get_course(self._course_id)
         return course.user_partitions
 
 
-class UserServiceInterface(object):
+class UserTagsService(object):
     """
     A runtime class that provides an interface to the user service.  It handles filling in
     the current course id and current user.
@@ -172,19 +173,16 @@ class UserServiceInterface(object):
                                            self.runtime.course_id, key, value)
 
 
-class UserServiceMixin(object):
-    """
-    Mix in a UserServiceInterface as self.user_service...
-    """
-
-    @property
-    def user_service(self):
-        return UserServiceInterface(self)
-
-
-class LmsModuleSystem(LmsHandlerUrls, LmsUserPartitions,
-                      UserServiceMixin, ModuleSystem):  # pylint: disable=abstract-method
+class LmsModuleSystem(LmsHandlerUrls, ModuleSystem):  # pylint: disable=abstract-method
     """
     ModuleSystem specialized to the LMS
     """
-    pass
+    def __init__(self, **kwargs):
+        services = kwargs.setdefault('services', {})
+        services['user_tags'] = UserTagsService(self)
+        services['partitions'] = LmsPartitionService(
+            user_tags_service=services['user_tags'],
+            course_id=kwargs.get('course_id', None),
+            track_function=kwargs.get('track_function', None),
+        )
+        super(LmsModuleSystem, self).__init__(**kwargs)

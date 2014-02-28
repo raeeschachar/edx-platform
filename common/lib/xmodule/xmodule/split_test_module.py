@@ -4,13 +4,13 @@ Module for running content split tests
 
 import logging
 
-from xmodule.partitions.partitions_service import get_user_group_for_partition
 from xmodule.progress import Progress
 from xmodule.seq_module import SequenceDescriptor
 from xmodule.x_module import XModule, module_attr
 
 from lxml import etree
 
+from xblock.core import XBlock
 from xblock.fields import Scope, Integer, Dict
 from xblock.fragment import Fragment
 
@@ -35,6 +35,8 @@ class SplitTestFields(object):
                              scope=Scope.content)
 
 
+@XBlock.needs('user_tags')
+@XBlock.needs('partitions')
 class SplitTestModule(SplitTestFields, XModule):
     """
     Show the user the appropriate child.  Uses the ExperimentState
@@ -53,7 +55,7 @@ class SplitTestModule(SplitTestFields, XModule):
 
         super(SplitTestModule, self).__init__(*args, **kwargs)
 
-        group_id = get_user_group_for_partition(self.runtime, self.user_partition_id)
+        group_id = self.runtime.service(self, 'partitions').get_user_group_for_partition(self.user_partition_id)
 
         # group_id_to_child comes from json, so it has to have string keys
         str_group_id = str(group_id)
@@ -169,6 +171,8 @@ class SplitTestModule(SplitTestFields, XModule):
         return progress
 
 
+@XBlock.needs('user_tags')
+@XBlock.needs('partitions')
 class SplitTestDescriptor(SplitTestFields, SequenceDescriptor):
     # the editing interface can be the same as for sequences -- just a container
     module_class = SplitTestModule

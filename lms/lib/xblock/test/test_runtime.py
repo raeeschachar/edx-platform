@@ -107,19 +107,22 @@ class TestUserServiceInterface(TestCase):
             replace_urls=str,
             course_id=self.course_id,
             get_real_user=mock_get_real_user,
-            descriptor_runtime=Mock()
+            descriptor_runtime=Mock(),
         )
         self.scope = 'course'
         self.key = 'key1'
 
+        self.mock_block = Mock()
+        self.mock_block.service_declaration.return_value = 'needs'
+
     def test_get_set_tag(self):
         # test for when we haven't set the tag yet
-        tag = self.runtime.user_service.get_tag(self.scope, self.key)
+        tag = self.runtime.service(self.mock_block, 'user_tags').get_tag(self.scope, self.key)
         self.assertIsNone(tag)
 
         # set the tag
         set_value = 'value'
-        self.runtime.user_service.set_tag(self.scope, self.key, set_value)
-        tag = self.runtime.user_service.get_tag(self.scope, self.key)
+        self.runtime.service(self.mock_block, 'user_tags').set_tag(self.scope, self.key, set_value)
+        tag = self.runtime.service(self.mock_block, 'user_tags').get_tag(self.scope, self.key)
 
         self.assertEqual(tag, set_value)
