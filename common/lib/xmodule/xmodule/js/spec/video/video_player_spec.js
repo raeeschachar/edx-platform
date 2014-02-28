@@ -714,7 +714,6 @@ function (VideoPlayer) {
             it('invalid endTime is reset to null', function () {
                 VideoPlayer.prototype.updatePlayTime.call(state, 0);
 
-                expect(state.videoPlayer.figureOutStartEndTime).toHaveBeenCalled();
                 expect(state.videoPlayer.figureOutStartingTime).toHaveBeenCalled();
 
                 VideoPlayer.prototype.figureOutStartEndTime.call(state, 60);
