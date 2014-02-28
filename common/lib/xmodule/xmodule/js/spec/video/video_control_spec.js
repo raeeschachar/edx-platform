@@ -121,6 +121,11 @@
                 }, 'duration is set', 5000);
 
                 runs(function () {
+                    // The test should pass if the duration is either 60, or 61.
+                    // Why? Because in Firefox, and in Chrome we get different
+                    // values. There are other tests written in such fashion. For
+                    // example see "update the video playback time" in
+                    // `video_player_spec.js` file.
                     if (duration === 60) {
                         expect($('.video-controls').find('.vidtime'))
                             .toHaveText('0:10 / 1:00');
@@ -128,6 +133,7 @@
                         expect($('.video-controls').find('.vidtime'))
                             .toHaveText('0:10 / 1:01');
                     } else {
+                        // This test will fail if duration is not 60, or 61.
                         expect(duration).toBe(60);
                     }
 

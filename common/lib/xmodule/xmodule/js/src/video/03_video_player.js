@@ -190,7 +190,6 @@ function (HTML5Video, Resizer) {
         var duration = state.videoPlayer.duration(),
             time;
 
-        state.videoPlayer.figureOutStartEndTime(duration);
         time = state.videoPlayer.figureOutStartingTime(duration);
 
         // Update the VCR.
@@ -665,15 +664,19 @@ function (HTML5Video, Resizer) {
     }
 
     function figureOutStartingTime(duration) {
-        var startTime = this.videoPlayer.startTime,
-            endTime   = this.videoPlayer.endTime,
-
-            savedVideoPosition = this.config.savedVideoPosition,
+        var savedVideoPosition = this.config.savedVideoPosition,
 
             // Default starting time is 0. This is the case when
             // there is not start-time, no previously saved position,
             // or one (or both) of those values is incorrect.
-            time = 0;
+            time = 0,
+
+            startTime, endTime;
+
+        this.videoPlayer.figureOutStartEndTime(duration);
+
+        startTime = this.videoPlayer.startTime;
+        endTime   = this.videoPlayer.endTime;
 
         if (startTime) {
             if (
@@ -721,7 +724,6 @@ function (HTML5Video, Resizer) {
                 }
             );
 
-            videoPlayer.figureOutStartEndTime(duration);
             time = videoPlayer.figureOutStartingTime(duration);
 
             // When the video finishes playing, we will start from the
