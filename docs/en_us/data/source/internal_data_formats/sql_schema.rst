@@ -4,7 +4,11 @@
 Student Info and Progress Data
 ##############################
 
-The following sections detail how edX stores stateful data for students internally, and is useful for developers and researchers who are examining database exports. This information includes demographic information collected at signup, course enrollment, course progress, and certificate status.
+The following sections detail how edX stores stateful data for students internally, and is useful for developers and researchers who are examining database exports. This data includes:
+
+* :ref:`User_Data`
+* :ref:`Courseware_Progress`
+* :ref:`Certificates`
 
 Conventions to keep in mind:
 
@@ -13,7 +17,7 @@ Conventions to keep in mind:
 * All datetimes are stored as UTC (Coordinated Universal Time).
 
 .. note::
-     EdX also uses the Django Python Web framework. Tables that are built into the Django Web framework are not documented here unless we use them in unconventional ways.
+     EdX also uses the Django Python Web framework. Tables that are built into the Django Web framework are documented here only if they are used in unconventional ways.
 
 Descriptions of the tables and columns that store student data follow, first in summary form with field types and constraints, and then with a detailed explanation of each column. 
 
@@ -85,9 +89,10 @@ Key
      * - MUL
        - Indexed for fast lookup, but the same value can appear multiple times. A unique index that allows NULL can also show up as MUL.
 
+.. _User_Data:
 
 ****************
-User Information
+User Data
 ****************
 
 The following tables store data gathered during site registration and course enrollment. 
@@ -109,13 +114,14 @@ A sample of the heading row and a data row in the ``auth_user`` table follow.
 
 .. code-block:: json
 
-    id  username  first_name  last_name email password  is_staff  is_active is_superuser  
-    last_login  date_joined status  email_key avatar_typcountry show_country  date_of_birth 
-    interesting_tags  ignored_tags  email_tag_filter_strategy display_tag_filter_strategy 
+    id  username  first_name  last_name  email  password  is_staff  is_active 
+    is_superuser  last_login  date_joined status  email_key  avatar_typ
+    country  show_country  date_of_birth  interesting_tags  ignored_tags  
+    email_tag_filter_strategy display_tag_filter_strategy 
     consecutive_days_visit_count
 
-    NNNNN  AAAAAAAAA      AAAAAA   AAAAAA   1 1 0 2014-01-01 17:28:27 2012-03-04 00:57:49   
-    NULL      0 NULL      0 0
+    NNNNN    AAAAAAAAA    AAAAAA  AAAAAA 1 1 0 2014-01-01 17:28:27 2012-03-04 
+    00:57:49   NULL      0 NULL      0 0
 
 The ``auth_user`` table has the following columns:
 
@@ -212,7 +218,7 @@ is_active
 -----------
   This value is 1 if the user has clicked on the activation link that was sent to them when they created their account, and 0 otherwise. 
 
-  Users who have ``is_active`` = 0 generally cannot log into the system. However, when users first create their account, they are automatically logged in even though they are not active. This is to let them experience the site immediately without having to check their email. They do see a little banner at the top of their dashboard reminding them to check their email and activate their account when they have time. If they log out, they won't be able to log back in again until they've activated. However, because our sessions last a long time, it is theoretically possible for someone to use the site as a student for days without being "active".
+  Users who have ``is_active`` = 0 generally cannot log into the system. However, when users first create an account, they are automatically logged in even though they have not yet activated the account. This is to let them experience the site immediately without having to check their email. A message displays on the dashboard to remind users to check their email and activate their accounts when they have time. When they log out, they cannot log back in again until activation is complete. However, because our sessions last a long time, it is possible for someone to use the site as a student for days without being "active".
 
   Once ``is_active`` is set to 1, the only circumstance in which it is set back to 0 is if the user is banned (which is a very rare, manual operation).
 
@@ -311,7 +317,7 @@ The ``auth_userprofile`` table has the following columns:
   | allow_certificate  | tinyint(1)   | NO   |     |                                          |
   +--------------------+--------------+------+-----+------------------------------------------+
 
-**History**: This table was organized differently for the students who signed up during the MITx prototype phase in the spring of 2012, and those who signed up afterwards. A significant difference exists in the demographic data gathered.
+**History**: The organization of this table was different for the students who signed up for the MITx prototype phase in the spring of 2012, than for those who signed up afterwards. A significant difference exists in the demographic data gathered.
 
 ----
 id
@@ -615,10 +621,11 @@ username
 -----------
   The student's username in ``auth_user.username``. 
 
+.. _Courseware_Progress:
 
-*******************
-Courseware Progress
-*******************
+************************
+Courseware Progress Data
+************************
 
 Any piece of content in the courseware can store state and score in the ``courseware_studentmodule`` table. Grades and the user Progress page are generated by doing a walk of the course contents, searching for graded items, looking up a student's entries for those items in ``courseware_studentmodule`` via *(course_id, student_id, module_id)*, and then applying the grade weighting found in the course policy and grading policy files. Course policy files determine how much weight one problem has relative to another, and grading policy files determine how much categories of problems are weighted (for example, HW=50%, Final=25%, etc.).
 
@@ -703,29 +710,29 @@ module_type
      * - course
        - The top level course module of which all course content is descended.
      * - crowdsource_hinter
-       - Not currently used. **History**: This module-type was included on a test basis in a single course. 
+       - Not currently used. **History**: This ``module_type`` was included in a single course on a test basis and then deprecated. 
      * - lti
-       - Learning Tools Interoperability component that adds an external learning application to display content, or to display content and also require a student response. (**is this correct?**)
+       - Learning Tools Interoperability component that adds an external learning application to display content, or to display content and also require a student response. 
      * - peergrading
-       - Indicates a problem that is graded by other students. (**is this correct?**)
+       - Indicates a problem that is graded by other students. 
      * - poll_question
-       - 
+       - Not currently used. **History**: This ``module_type`` was included in a single course on a test basis and then deprecated. 
      * - problem
        - A problem that the user can submit solutions for. We have many different varieties.
      * - problemset
        - A collection of problems and supplementary materials, typically used for homeworks and rendered as a horizontal icon bar in the courseware. Use is inconsistent, and some courses use a ``sequential`` instead.
      * - randomize
-       - Specifies that specified values in a problem changes each time the problem is accessed. (**is this correct?**)
+       - Specifies that specified values in a problem changes each time the problem is accessed. 
      * - selfassessment
        - Self assessment problems. Used in a single course in Fall 2012 as an early test of the open ended grading system. Deprecated in favor of ``combinedopenended``. 
      * - sequential
        - A collection of videos, problems, and other materials, rendered as a horizontal icon bar in the courseware.
      * - timelimit
-       - 
+       - Not currently used. **History**: This ``module_type`` was included in a single course on a test basis and then deprecated. 
      * - video
-       - A component that makes a video file available for students to play. (**is this correct?**)
+       - A component that makes a video file available for students to play.
      * - videoalpha
-       - Not currently used. **History**: During the implementation of a change to the ``video`` module_type, both video and videoalpha were stored. 
+       - Not currently used. **History**: During the implementation of a change to the ``video`` ``module_type``, both ``video`` and ``videoalpha`` were stored. The ``videoalpha`` type was then deprecated.
      * - videosequence
        - A collection of videos, exercise problems, and other materials, rendered as a horizontal icon bar in the courseware. Use is inconsistent, and some courses use a ``sequential`` instead.
      * - word_cloud
@@ -843,9 +850,11 @@ course_id
 -----------
   The course that this row applies to, represented in the format org/course/run (for example, ``MITx/6.002x/2012_Fall``). The same course content (same ``module_id``) can be used in different courses, and a student's state needs to be tracked separately for each course.
 
-***************
-Certificates
-***************
+.. _Certificates:
+
+******************
+Certificate Data
+******************
 
 .. _certificates_generatedcertificate:
 
@@ -859,21 +868,22 @@ A sample of the heading row and two data rows in the ``certificates_generatedcer
 
 .. code-block:: json
 
- id  user_id download_url  grade course_id key distinction status  verify_uuid download_uuid name  
- created_date  modified_date error_reason  mode
+ id  user_id  download_url  grade  course_id  key  distinction  status  verify_uuid 
+ download_uuid  name  created_date  modified_date error_reason  mode
 
- 26 NNNNNN  https://s3.amazonaws.com/verify.edx.org/downloads/9_hash_1/Certificate.pdf  0.84  
- BerkeleyX/CS169.1x/2012_Fall  f_hash_a  0 downloadable  2_hash_f  9_hash_1  AAAAAA AAAAAA 
- 2012-11-10 00:12:11 2012-11-10 00:12:13   honor
+ 26  NNNNNN  
+ https://s3.amazonaws.com/verify.edx.org/downloads/9_hash_1/Certificate.pdf  
+ 0.84  BerkeleyX/CS169.1x/2012_Fall  f_hash_a   0   downloadable  2_hash_f  
+ 9_hash_1  AAAAAA  2012-11-10  00:12:11  2012-11-10  00:12:13   honor
 
- 27  NNNNNN    0.0 BerkeleyX/CS169.1x/2012_Fall    0 notpassing      AAAAAA AAAAAA 2012-11-10 
- 00:12:11 2012-11-26 19:06:19   honor
+ 27  NNNNNN        0.0  BerkeleyX/CS169.1x/2012_Fall    0  notpassing   
+           AAAAAA  2012-11-10  00:12:11  2012-11-26  19:06:19  honor
 
 The ``certificates_generatedcertificate`` table has the following columns:
 
 +---------------+--------------+------+-----+---------+----------------+
 | Field         | Type         | Null | Key | Default | Extra          |
-+---------------+--------------+------+-----+---------+----------------+
++===============+==============+======+=====+=========+================+
 | id            | int(11)      | NO   | PRI | NULL    | auto_increment |
 +---------------+--------------+------+-----+---------+----------------+
 | user_id       | int(11)      | NO   | MUL | NULL    |                |
