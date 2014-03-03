@@ -67,11 +67,19 @@ function () {
         };
 
         Player.prototype.getDuration = function () {
+            var duration;
+
             if (isNaN(this.video.duration)) {
-                return 0;
+                duration = 0;
+                // return 0;
             }
 
-            return this.video.duration;
+            duration = this.video.duration;
+            // return this.video.duration;
+
+            console.log('[debug 02]: duration = ', duration);
+
+            return duration;
         };
 
         Player.prototype.setPlaybackRate = function (value) {

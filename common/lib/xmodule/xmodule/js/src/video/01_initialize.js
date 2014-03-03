@@ -712,11 +712,19 @@ function (VideoPlayer, VideoStorage) {
     }
 
     function getDuration() {
+        var duration;
+
         try {
-            return this.metadata[this.youtubeId()].duration;
+            duration = this.metadata[this.youtubeId()].duration;
+            // return this.metadata[this.youtubeId()].duration;
         } catch (err) {
-            return this.metadata[this.youtubeId('1.0')].duration;
+            duration = this.metadata[this.youtubeId('1.0')].duration;
+            // return this.metadata[this.youtubeId('1.0')].duration;
         }
+
+        console.log('[debug 01]: duration = ', duration);
+
+        return duration;
     }
 
     function getCurrentLanguage() {

@@ -812,6 +812,8 @@ function (HTML5Video, Resizer) {
         // video reloads, but the start-end range is not visible.
         if (this.videoPlayer.player.getDuration) {
             dur = this.videoPlayer.player.getDuration();
+
+            console.log('[debug 03]: duration = ', dur);
         }
 
         // For YouTube videos, before the video starts playing, the API
@@ -829,6 +831,8 @@ function (HTML5Video, Resizer) {
         if (!isFinite(dur) || dur <= 0) {
             if (this.videoType === 'youtube') {
                 dur = this.getDuration();
+
+                console.log('[debug 04]: duration = ', dur);
             }
         }
 
