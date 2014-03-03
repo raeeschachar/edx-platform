@@ -13,7 +13,9 @@ Course staff documentation, *Building a Course with edX Studio*, is available on
 
 Recent changes to *Building a Course with edX Studio* include:
 
-*  `Staff Debug Info <http://edx.readthedocs.org/projects/ca/en/latest/staff_debug_info.html>`_ 
+* `Staff Debug Info <http://edx.readthedocs.org/projects/ca/en/latest/staff_debug_info.html>`_ 
+
+* Updates to `Add Files to a Course <http://edx.readthedocs.org/projects/ca/en/latest/create_new_course.html#add-files-to-a-course>`_
 
 
 
@@ -29,6 +31,8 @@ edX Studio
 * STUD-1244  ?
 
 * A problem that caused the first line of an HTML component to be partially cut off in the Studio view is resolved. (STUD-1380)
+
+* The Files & Uploads page now includes an external URL for each assett.  See `Add Files to a Course <http://edx.readthedocs.org/projects/ca/en/latest/create_new_course.html#add-files-to-a-course>`_ for more information.
 
 
 
