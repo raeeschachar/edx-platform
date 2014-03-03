@@ -8,6 +8,9 @@ Text Intro
 .. toctree::
    :maxdepth: 2
 
+   view_course_content
+   set_content_releasedates
+
    discussions
    discussion_guidance_moderators
    course_data

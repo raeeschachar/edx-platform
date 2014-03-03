@@ -13,5 +13,4 @@ Text Intro
    google_hangouts
    tools
    additional_tools
-   set_content_releasedates
-   view_course_content
+
