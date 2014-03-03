@@ -232,6 +232,9 @@ FEATURES = {
 
     # Turn on/off Microsites feature
     'USE_MICROSITES': False,
+
+    # Turn off Advanced Security by default
+    'ADVANCED_SECURITY': False,
 }
 
 # Used for A/B testing
@@ -1464,3 +1467,8 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS += ('edx_jsdraw',)
+
+
+### ADVANCED_SECURITY_CONFIG
+# Empty by default
+ADVANCED_SECURITY_CONFIG = {}
