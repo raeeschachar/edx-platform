@@ -846,8 +846,7 @@ function (HTML5Video, Resizer) {
 
         // Default parameters that always get logged.
         logInfo = {
-            'id':   this.id,
-            'code': this.youtubeId()
+            'id':   this.id
         };
 
         // If extra parameters were passed to the log.

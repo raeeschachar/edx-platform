@@ -178,10 +178,15 @@ class TestVideoTranscriptTranslation(TestVideo):
         self.assertEqual(response.body, 'Subs!')
 
     def test_translation_fails(self):
-        # No videoId
-        request = Request.blank('/translation?language=ru')
+        # No language
+        request = Request.blank('/translation')
         response = self.item.transcript(request=request, dispatch='translation')
         self.assertEqual(response.status, '400 Bad Request')
+
+        # No videoId - HTML5 video with language that is not in available languages
+        request = Request.blank('/translation?language=ru')
+        response = self.item.transcript(request=request, dispatch='translation')
+        self.assertEqual(response.status, '404 Not Found')
 
         # Language is not in available languages
         request = Request.blank('/translation?language=ru&videoId=12345')
@@ -209,11 +214,11 @@ class TestVideoTranscriptTranslation(TestVideo):
         }
         self.non_en_file.seek(0)
         _upload_file(self.non_en_file, self.item_descriptor.location, os.path.split(self.non_en_file.name)[1])
-        subs_id = _get_subs_id(self.non_en_file.name)
+        _get_subs_id(self.non_en_file.name)
 
         # manually clean youtube_id_1_0, as it has default value
         self.item.youtube_id_1_0 = ""
-        request = Request.blank('/translation?language=uk&videoId={}'.format(subs_id))
+        request = Request.blank('/translation?language=uk')
         response = self.item.transcript(request=request, dispatch='translation')
         self.assertDictEqual(json.loads(response.body), subs)
 
