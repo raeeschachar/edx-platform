@@ -69,3 +69,10 @@ class SplitTestModuleTest(XModuleXmlImportTest):
         self.tags_service.get_tag.return_value = user_tag
 
         self.assertEquals(self.split_test_descriptor.child_descriptor.url_name, child_url_name)
+
+    @ddt.data(('0', 'split_test_cond0'), ('1', 'split_test_cond1'))
+    @ddt.unpack
+    def test_get_html(self, user_tag, child_url_name):
+        print "user_tag", user_tag, type(user_tag)
+        self.tags_service.get_tag.return_value = user_tag
+        print self.module_system.render(self.split_test_descriptor, 'student_view').content
