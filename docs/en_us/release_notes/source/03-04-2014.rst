@@ -30,7 +30,7 @@ edX Studio
 
 * A problem that caused the first line of an HTML component to be partially cut off in the Studio view is resolved. (STUD-1380)
 
-* The Files & Uploads page now includes an external URL for each assett.  See `Add Files to a Course <http://edx.readthedocs.org/projects/ca/en/latest/create_new_course.html#add-files-to-a-course>`_ for more information.
+* The Files & Uploads page now includes an external URL for each asset.  See `Add Files to a Course <http://edx.readthedocs.org/projects/ca/en/latest/create_new_course.html#add-files-to-a-course>`_ for more information.
 
 
 
@@ -49,7 +49,7 @@ edX Learning Management System
 Accessibility Improvements
 ===========================
 
-* The layout of Course Updates is improved to use semantic tagging and not just simple lists, making the page more accessible to screen readers (LMS-1724)
+* The layout of Course Updates is improved to use semantic tagging and not just simple lists, making the page more accessible to screen readers. (LMS-1724)
 
 * A label is added to the checkbox problem template. 
 
