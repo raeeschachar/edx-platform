@@ -224,9 +224,6 @@ class CourseFixture(StudioApiFixture):
         """
         self._create_course()
 
-        # Remove once STUD-1248 is resolved
-        self._update_loc_map()
-
         self._install_course_updates()
         self._install_course_handouts()
         self._configure_course()
