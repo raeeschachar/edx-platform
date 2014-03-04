@@ -41,7 +41,7 @@ edX Learning Management System
 
 * The edX registration form now validates that the Username field is 30 characters or less, and the E-mail address is 75 characters or less. The user receives a message if the Username or E-mail values are too long. (LMS-1479)
 
-* If the video player resets after reaching the end, or for any other reason, it now correctly starts at the configured start time for the video, not 00:00:00. B(LD659)
+* If the video player resets after reaching the end, or for any other reason, it now correctly starts at the configured start time for the video, not 00:00:00. (BLD-659)
 
 
 
