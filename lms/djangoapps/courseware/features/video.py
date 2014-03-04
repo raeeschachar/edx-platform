@@ -2,6 +2,7 @@
 #pylint: disable=C0111
 
 from lettuce import world, step
+from nose.tools import assert_equal
 from splinter.request_handler.request_handler import RequestHandler
 import json
 from common import i_am_registered_for_the_course, section_location, visit_scenario_item
@@ -10,6 +11,7 @@ from django.conf import settings
 from cache_toolbox.core import del_cached_content
 from xmodule.contentstore.content import StaticContent
 import os
+import requests
 from functools import partial
 from xmodule.contentstore.django import contentstore
 TEST_ROOT = settings.COMMON_TEST_DATA_ROOT
@@ -310,7 +312,7 @@ def _open_menu(menu):
 @step('transcript is downloadable$')
 def transcript_is_downloaded(_step):
     world.wait_for_ajax_complete()
-    request = RequestHandler()
     download_button_url = world.css_find('.video-tracks a').first['href']
-    request.connect(download_button_url)
-    return request.status_code.is_success()
+    session_id_cookie = ({i['name']:i['value']} for i in  world.browser.cookies.all() if i['name']==u'sessionid').next()
+    result = requests.get(download_button_url, cookies=session_id_cookie)
+    assert_equal(result.status_code, 200)
