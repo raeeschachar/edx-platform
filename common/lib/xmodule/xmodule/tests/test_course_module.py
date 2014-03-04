@@ -1,4 +1,5 @@
 import unittest
+import json
 from datetime import datetime
 
 from fs.memoryfs import MemoryFS
@@ -8,6 +9,7 @@ from mock import Mock, patch
 from xblock.runtime import KvsFieldData, DictKeyValueStore
 
 import xmodule.course_module
+from xmodule.course_module import UserPartitionList
 from xmodule.modulestore.xml import ImportSystem, XMLModuleStore, LocationReader
 from django.utils.timezone import UTC
 
@@ -196,6 +198,36 @@ class IsNewCourseTestCase(unittest.TestCase):
 
         d = get_dummy_course('2012-12-02T12:00', end='2014-9-04T12:00')
         self.assertEqual('Sep 04, 2014', d.end_date_text)
+
+
+class TestUserPartitionList(unittest.TestCase):
+
+    def test_round_trip(self):
+        sample_name = "Experiment 0"
+        sample_id = 0
+        sample_description = "Unicorns?"
+        sample_values = [{
+            "id": sample_id,
+            "name": sample_name,
+            "description": sample_description,
+            "version": 1,
+            "groups": [{"id": 0,
+                        "name": "group 0",
+                        "version": 1},
+                       {"id": 2,
+                        "name": "group 2",
+                        "version": 1}]
+        }]
+
+        user_partition_list = UserPartitionList().from_json(sample_values)
+        first_partition = user_partition_list[0]
+        self.assertEqual(first_partition.name, sample_name)
+        self.assertEqual(first_partition.id, sample_id)
+        self.assertEqual(first_partition.description, sample_description)
+        self.assertEqual(len(first_partition.groups), 2)
+
+        sample_json = UserPartitionList().to_json(user_partition_list)
+        self.assertEqual(sample_json, sample_values)
 
 
 class DiscussionTopicsTestCase(unittest.TestCase):
