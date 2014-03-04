@@ -37,12 +37,13 @@ This section contains a table of the JSON fields that are common to the schema d
 +---------------------------+-------------------------------------------------------------+-------------+------------------------------------+
 | ``session``               | This key identifies the user's session. May be undefined.   | string      | 32 digits                          |
 +---------------------------+-------------------------------------------------------------+-------------+------------------------------------+
-| ``time``                  | Gives the GMT time at which the event was fired.            | string      | 'YYYY-MM-DDThh:mm:ss.xxxxxx'       |
+| ``time``                  | Gives the UTC time at which the event was fired.            | string      | 'YYYY-MM-DDThh:mm:ss.xxxxxx'       |
 +---------------------------+-------------------------------------------------------------+-------------+------------------------------------+
 | ``username``              | The username of the user who caused the event to fire. This | string      |                                    |
 |                           | string is empty for anonymous events (i.e., user not logged |             |                                    |
 |                           | in).                                                        |             |                                    |
 +---------------------------+-------------------------------------------------------------+-------------+------------------------------------+
+
 
 ****************************************
 Student Event Types
@@ -260,16 +261,16 @@ The server fires ``problem_check`` events when a problem is successfully checked
 |                     |               +-----------------+----------+----------------------------------------+ 
 |                     |               | ``hintmode``    | string   | None, 'on_request', 'always'. Nulls    |
 |                     |               |                 |          | allowed.                               |
-|                     |               +-----------------+----------+----------------------------------------+ 
+|                     |               +-----------------+----------+----------------------------------------+
 |                     |               | ``queuestate``  | dict     | None when not queued, else             |
-|                     |               |                 |          | ``{key:' ', time:' '}`` where key is a |
-|                     |               |                 |          | secret string and time is a string     |
-|                     |               |                 |          | dump of a DateTime object in the form  |
-|                     |               |                 |          | '%Y%m%d%H%M%S'. Nulls allowed.         |
+|                     |               |                 |          | ``{key:'', time:''}`` where ``key``    |
+|                     |               |                 |          | is a secret string dump of a DateTime  |
+|                     |               |                 |          | object in the form '%Y%m%d%H%M%S'.     |
+|                     |               |                 |          | Nulls allowed.                         |
 +---------------------+---------------+---------------------------------------------------------------------+
-| ``grade``           | integer       | Current grade value                                                 |
+| ``grade``           | integer       | Current grade value.                                                |
 +---------------------+---------------+---------------------------------------------------------------------+
-| ``max_grade``       | integer       | Maximum possible grade value                                        |
+| ``max_grade``       | integer       | Maximum possible grade value.                                       |
 +---------------------+---------------+---------------------------------------------------------------------+
 | ``problem_id``      | string        | ID of the problem being checked.                                    |
 +---------------------+---------------+---------------------------------------------------------------------+
@@ -629,69 +630,71 @@ Instructor Event Types
 
 The Instructor Event Type table lists the event types logged for course team interaction with the Instructor Dashboard in the LMS.
 
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| Event Type                             | Description                   | Component            | Event Source    | ``event`` Fields    | Type          |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``list-students``,                     |                               | Instructor Dashboard | Server          |                     |               |
-| ``dump-grades``,                       |                               |                      |                 |                     |               |
-| ``dump-grades-raw``,                   |                               |                      |                 |                     |               |
-| ``dump-grades-csv``,                   |                               |                      |                 |                     |               |
-| ``dump-grades-csv-raw``,               |                               |                      |                 |                     |               |
-| ``dump-answer-dist-csv``,              |                               |                      |                 |                     |               |
-| ``dump-graded-assignments-config``     |                               |                      |                 |                     |               |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``rescore-all-submissions``,           |                               | Instructor Dashboard | Server          | ``problem``         | string        |
-| ``reset-all-attempts``                 |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``course``          | string        |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``delete-student-module-state``,       |                               | Instructor Dashboard | Server          | ``problem``         | string        |
-| ``rescore-student-submission``         |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``student``         | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``course``          | string        |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``reset-student-attempts``             |                               | Instructor Dashboard | Server          | ``old_attempts``    | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``student``         | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``problem``         | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``instructor``      | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``course``          | string        |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``get-student-progress-page``          |                               | Instructor Dashboard | Server          | ``student``         | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``instructor``      | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``course``          | string        |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``list-staff``,                        |                               | Instructor Dashboard | Server          |                     |               |
-| ``list-instructors``,                  |                               |                      |                 |                     |               |
-| ``list-beta-testers``                  |                               |                      |                 |                     |               |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``add-instructor``,                    |                               | Instructor Dashboard | Server          | ``instructor``      | string        |
-| ``remove-instructor``                  |                               |                      |                 |                     |               |
-|                                        |                               |                      |                 |                     |               |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``list-forum-admins``,                 |                               | Instructor Dashboard | Server          | ``course``          | string        |
-| ``list-forum-mods``,                   |                               |                      |                 |                     |               |
-| ``list-forum-community-TAs``           |                               |                      |                 |                     |               |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``remove-forum-admin``,                |                               | Instructor Dashboard | Server          | ``username``        | string        |
-| ``add-forum-admin``,                   |                               |                      |                 |                     |               |
-| ``remove-forum-mod``,                  |                               |                      |                 |                     |               |
-| ``add-forum-mod``,                     |                               |                      |                 +---------------------+---------------+
-| ``remove-forum-community-TA``,         |                               |                      |                 | ``course``          | string        |
-| ``add-forum-community-TA``             |                               |                      |                 |                     |               |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``psychometrics-histogram-generation`` |                               | Instructor Dashboard | Server          | ``problem``         | string        |
-|                                        |                               |                      |                 |                     |               |
-|                                        |                               |                      |                 |                     |               |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
-| ``add-or-remove-user-group``           |                               | Instructor Dashboard | Server          | ``event_name``      | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``user``            | string        |
-|                                        |                               |                      |                 +---------------------+---------------+
-|                                        |                               |                      |                 | ``event``           | string        |
-+----------------------------------------+-------------------------------+----------------------+-----------------+---------------------+---------------+
+.. need a description for each of these
+
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| Event Type                             | Component            | Event Source    | ``event`` Fields    | Type          |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``list-students``,                     | Instructor Dashboard | Server          |                     |               |
+| ``dump-grades``,                       |                      |                 |                     |               |
+| ``dump-grades-raw``,                   |                      |                 |                     |               |
+| ``dump-grades-csv``,                   |                      |                 |                     |               |
+| ``dump-grades-csv-raw``,               |                      |                 |                     |               |
+| ``dump-answer-dist-csv``,              |                      |                 |                     |               |
+| ``dump-graded-assignments-config``     |                      |                 |                     |               |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``rescore-all-submissions``,           | Instructor Dashboard | Server          | ``problem``         | string        |
+| ``reset-all-attempts``                 |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``course``          | string        |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``delete-student-module-state``,       | Instructor Dashboard | Server          | ``problem``         | string        |
+| ``rescore-student-submission``         |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``student``         | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``course``          | string        |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``reset-student-attempts``             | Instructor Dashboard | Server          | ``old_attempts``    | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``student``         | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``problem``         | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``instructor``      | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``course``          | string        |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``get-student-progress-page``          | Instructor Dashboard | Server          | ``student``         | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``instructor``      | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``course``          | string        |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``list-staff``,                        | Instructor Dashboard | Server          |                     |               |
+| ``list-instructors``,                  |                      |                 |                     |               |
+| ``list-beta-testers``                  |                      |                 |                     |               |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``add-instructor``,                    | Instructor Dashboard | Server          | ``instructor``      | string        |
+| ``remove-instructor``                  |                      |                 |                     |               |
+|                                        |                      |                 |                     |               |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``list-forum-admins``,                 | Instructor Dashboard | Server          | ``course``          | string        |
+| ``list-forum-mods``,                   |                      |                 |                     |               |
+| ``list-forum-community-TAs``           |                      |                 |                     |               |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``remove-forum-admin``,                | Instructor Dashboard | Server          | ``username``        | string        |
+| ``add-forum-admin``,                   |                      |                 |                     |               |
+| ``remove-forum-mod``,                  |                      |                 |                     |               |
+| ``add-forum-mod``,                     |                      |                 +---------------------+---------------+
+| ``remove-forum-community-TA``,         |                      |                 | ``course``          | string        |
+| ``add-forum-community-TA``             |                      |                 |                     |               |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``psychometrics-histogram-generation`` | Instructor Dashboard | Server          | ``problem``         | string        |
+|                                        |                      |                 |                     |               |
+|                                        |                      |                 |                     |               |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
+| ``add-or-remove-user-group``           | Instructor Dashboard | Server          | ``event_name``      | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``user``            | string        |
+|                                        |                      |                 +---------------------+---------------+
+|                                        |                      |                 | ``event``           | string        |
++----------------------------------------+----------------------+-----------------+---------------------+---------------+
