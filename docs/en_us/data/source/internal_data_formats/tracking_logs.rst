@@ -248,21 +248,19 @@ The server fires ``problem_check`` events when a problem is successfully checked
 +---------------------+---------------+---------------------------------------------------------------------+
 | ``attempts``        | integer       |                                                                     |
 +---------------------+---------------+---------------------------------------------------------------------+
-| ``correct_map``     | string / JSON |                                                                     |
-|                     |               +-----------------+----------+----------------------------------------+
-|                     |               | ``answer_id``   | string   |                                        |
+| ``correct_map``     | string / JSON | For each problem id value listed by ``answers``, provides:          |
 |                     |               +-----------------+----------+----------------------------------------+ 
 |                     |               | ``correctness`` | string   | 'correct', 'incorrect'                 |
-|                     |               +-----------------+----------+----------------------------------------+ 
-|                     |               | ``npoints``     | integer  | Points awarded for this                | 
-|                     |               |                 |          | ``answer_id``. Nulls allowed.          |
-|                     |               +-----------------+----------+----------------------------------------+ 
-|                     |               | ``msg``         | string   | Gives extra message response.          | 
 |                     |               +-----------------+----------+----------------------------------------+ 
 |                     |               | ``hint``        | string   | Gives optional hint. Nulls allowed.    |
 |                     |               +-----------------+----------+----------------------------------------+ 
 |                     |               | ``hintmode``    | string   | None, 'on_request', 'always'. Nulls    |
 |                     |               |                 |          | allowed.                               |
+|                     |               +-----------------+----------+----------------------------------------+ 
+|                     |               | ``msg``         | string   | Gives extra message response.          | 
+|                     |               +-----------------+----------+----------------------------------------+ 
+|                     |               | ``npoints``     | integer  | Points awarded for this                | 
+|                     |               |                 |          | ``answer_id``. Nulls allowed.          |
 |                     |               +-----------------+----------+----------------------------------------+
 |                     |               | ``queuestate``  | dict     | None when not queued, else             |
 |                     |               |                 |          | ``{key:'', time:''}`` where ``key``    |
