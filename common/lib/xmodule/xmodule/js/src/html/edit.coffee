@@ -114,7 +114,7 @@ class @HTMLEditingDescriptor
     # both the startContent must be sync'ed up and the dirty flag set to false.
     content = rewriteStaticLinks(@advanced_editor.getValue(), '/static/', @base_asset_url)
     visualEditor.setContent(content)
-    visualEditor.startContent = visualEditor.getContent({format : 'raw'});
+    visualEditor.startContent = visualEditor.getContent({format : 'raw'})
     @focusVisualEditor(visualEditor)
     @showingVisualEditor = true
 

@@ -89,11 +89,10 @@ describe 'HTMLEditingDescriptor', ->
       @descriptor.showingVisualEditor = false
 
       visualEditorStub =
-        isNotDirty: false
         content: 'not set'
         startContent: 'not set',
         focus: () -> true
-        isDirty: () -> @isNotDirty
+        isDirty: () -> false
         setContent: (x) -> @content = x
         getContent: -> @content
 
@@ -109,11 +108,10 @@ describe 'HTMLEditingDescriptor', ->
       @descriptor.showingVisualEditor = false
 
       visualEditorStub =
-        isNotDirty: false
         content: 'not set'
         startContent: 'not set',
         focus: () -> true
-        isDirty: () -> @isNotDirty
+        isDirty: () -> false
         setContent: (x) -> @content = x
         getContent: -> @content
 
