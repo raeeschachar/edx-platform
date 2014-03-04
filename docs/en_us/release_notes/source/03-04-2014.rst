@@ -24,11 +24,11 @@ Recent changes to *Building a Course with edX Studio* include:
 edX Studio
 *************
 
-* A problem that caused escaped HTML characters to be displayed incorrectly in Course Updates is resolved. (STUD-154)
+* A problem that caused escaped HTML characters to be displayed incorrectly on the Course Updates page is resolved. (STUD-154)
 
 * A problem that prevented course staff from posting in discussions when a course was deleted and recreated is resolved. (STUD-1140)
 
-* A problem that caused the first line of an HTML component to be partially cut off in the Studio view is resolved. (STUD-1380)
+* A problem that caused the first line of an HTML component to be partially cut off in the unit page is resolved. (STUD-1380)
 
 * The Files & Uploads page now includes an external URL for each asset.  See `Add Files to a Course <http://edx.readthedocs.org/projects/ca/en/latest/create_new_course.html#add-files-to-a-course>`_ for more information.
 
@@ -39,9 +39,9 @@ edX Studio
 edX Learning Management System
 ***************************************
 
-* The edX registration form now validates that the Username field is 30 characters or less, and the E-mail address is 75 characters or less. The user receives a message if the Username or E-mail values are too long. (LMS-1479)
+* The edX registration form now validates that the Public Username field contains 30 or fewer characters, and that the E-mail field contains 75 or fewer characters. The user receives a message if the Public Username or E-mail values are too long. (LMS-1479)
 
-* If the video player resets after reaching the end, or for any other reason, it now correctly starts at the configured start time for the video, not 00:00:00. (BLD-659)
+* If a video is configured to start at a time other than 00:00:00, the video player now correctly starts the video at the specified start time after the video player is reset for any reason. (BLD-659)
 
 
 
