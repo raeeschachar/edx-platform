@@ -9,11 +9,13 @@
 
         describe('constructor', function () {
             describe('always', function () {
-                var container, button, menu, menuItems, menuItemsLinks;
+                var videoTracks, container, button, menu, menuItems,
+                    menuItemsLinks;
 
                 beforeEach(function () {
                     state = jasmine.initializePlayer();
-                    container = $('div.menu-container'),
+                    videoTracks = $('li.video-tracks'),
+                    container = videoTracks.children('div.menu-container'),
                     button = container.children('a.menu-button'),
                     menu = container.children('ol.menu'),
                     menuItems = menu.children('li.menu-item'),
@@ -32,7 +34,7 @@
                     // container. Exact length test?
                     expect(menuItems.length).toBeGreaterThan(0);
                     expect(menuItemsLinks.length).toBeGreaterThan(0);
-                    expect(menuItems.length).toBeEqual(menuItemsLinks.length);
+                    expect(menuItems.length).toBe(menuItemsLinks.length);
                     // And one menu item is active
                     activeMenuItem = menuItems.filter('.active');
                     expect(activeMenuItem.length).toBe(1);
@@ -56,7 +58,7 @@
                    function () {
                         expect(button).toHaveAttrs({
                             'role': 'button',
-                            'title': '.txt',
+                            'title': '.srt',
                             'aria-disabled': 'false'
                         });
 
@@ -70,8 +72,8 @@
             });
 
             describe('when running', function () {
-                var container, button, menu, menuItems, menuItemsLinks,
-                    KEY = $.ui.keyCode,
+                var videoTracks, container, button, menu, menuItems,
+                    menuItemsLinks, KEY = $.ui.keyCode,
 
                     keyPressEvent = function(key) {
                         return $.Event('keydown', {keyCode: key});
@@ -105,7 +107,8 @@
 
                 beforeEach(function () {
                     state = jasmine.initializePlayer();
-                    container = $('div.menu-container'),
+                    videoTracks = $('li.video-tracks'),
+                    container = videoTracks.children('div.menu-container'),
                     button = container.children('a.menu-button'),
                     menu = container.children('ol.menu'),
                     menuItems = menu.children('li.menu-item'),
@@ -183,10 +186,10 @@
 
                     // Test if each element has been called twice.
                     expect($.fn.focus.calls.length)
-                        .toEqual(2*menuItemsLinks.length);
+                        .toEqual(2*menuItemsLinks.length+1);
                 });
 
-                it('ESC keydown on speed entry closes menu', function () {
+                it('ESC keydown on menu item closes menu', function () {
                     // First open menu. Focus is on last speed entry.
                     container.trigger(keyPressEvent(KEY.UP));
                     menuItemsLinks.last().trigger(keyPressEvent(KEY.ESCAPE));
@@ -202,8 +205,8 @@
                     // First open menu.
                     container.trigger(keyPressEvent(KEY.UP));
                     // Focus on '.txt'
-                    speedEntries.eq(0).focus();
-                    speedEntries.eq(0).trigger(keyPressEvent(KEY.ENTER));
+                    menuItemsLinks.eq(0).focus();
+                    menuItemsLinks.eq(0).trigger(keyPressEvent(KEY.ENTER));
 
                     // Menu is closed, focus has been returned to container
                     // and file format is '.txt'.
@@ -220,8 +223,8 @@
                     // First open menu.
                     container.trigger(keyPressEvent(KEY.UP));
                     // Focus on '.txt'
-                    speedEntries.eq(0).focus();
-                    speedEntries.eq(0).trigger(keyPressEvent(KEY.SPACE));
+                    menuItemsLinks.eq(0).focus();
+                    menuItemsLinks.eq(0).trigger(keyPressEvent(KEY.SPACE));
 
                     // Menu is closed, focus has been returned to container
                     // and file format is '.txt'.
