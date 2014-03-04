@@ -28,8 +28,6 @@ edX Studio
 
 * A problem that prevented course staff from posting in discussions when a course was deleted and recreated is resolved. (STUD-1140)
 
-* STUD-1244  ?
-
 * A problem that caused the first line of an HTML component to be partially cut off in the Studio view is resolved. (STUD-1380)
 
 * The Files & Uploads page now includes an external URL for each assett.  See `Add Files to a Course <http://edx.readthedocs.org/projects/ca/en/latest/create_new_course.html#add-files-to-a-course>`_ for more information.
@@ -43,7 +41,7 @@ edX Learning Management System
 
 * The edX registration form now validates that the Username field is 30 characters or less, and the E-mail address is 75 characters or less. The user receives a message if the Username or E-mail values are too long. (LMS-1479)
 
-BLD-659
+* If the video player resets after reaching the end, or for any other reason, it now correctly starts at the configured start time for the video, not 00:00:00. B(LD659)
 
 
 
