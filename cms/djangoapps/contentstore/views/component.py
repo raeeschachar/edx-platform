@@ -370,10 +370,8 @@ def component_handler(request, usage_id, handler, suffix=''):
         raise Http404
 
     # unintentional update to handle any side effects of handle call; so, request user didn't author
-    # the change
+    # the change. Don't persist if it's not draft.
     if getattr(descriptor, 'is_draft', False):
         modulestore('draft').update_item(descriptor, None)
-    else:
-        modulestore('direct').update_item(descriptor, None)
 
     return webob_to_django_response(resp)
