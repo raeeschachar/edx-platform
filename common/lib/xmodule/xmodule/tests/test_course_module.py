@@ -1,5 +1,4 @@
 import unittest
-import json
 from datetime import datetime
 
 from fs.memoryfs import MemoryFS
@@ -201,6 +200,9 @@ class IsNewCourseTestCase(unittest.TestCase):
 
 
 class TestUserPartitionList(unittest.TestCase):
+    """
+    Test parsing user partition lists from json
+    """
 
     def test_round_trip(self):
         sample_name = "Experiment 0"
