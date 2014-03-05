@@ -1,4 +1,10 @@
 (function ($, undefined) {
+    // window.vit = window.it;
+    // window.it = function () {};
+
+    // window.vdescribe = window.describe;
+    // window.describe = function () {};
+
     // Stub YouTube API.
     window.YT = {
         Player: function () {

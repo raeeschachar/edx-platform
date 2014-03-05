@@ -678,7 +678,7 @@ function (HTML5Video, Resizer) {
         startTime = this.videoPlayer.startTime;
         endTime   = this.videoPlayer.endTime;
 
-        if (startTime) {
+        if (startTime > 0) {
             if (
                 startTime < savedVideoPosition &&
                 (endTime > savedVideoPosition || endTime === null) &&
@@ -693,7 +693,7 @@ function (HTML5Video, Resizer) {
                 time = startTime;
             }
         } else if (
-            savedVideoPosition &&
+            savedVideoPosition > 0 &&
             (endTime > savedVideoPosition || endTime === null) &&
 
             // We do not want to jump to the end of the video.
