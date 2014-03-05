@@ -275,7 +275,7 @@ class CourseUpdateTest(CourseTestCase):
         # check posting on handouts
         block = u'handouts'
         handouts_locator = BlockUsageLocator(
-            package_id=course_location.course_id.replace('/', '.'), branch=branch, version_guid=version, block_id=block
+            package_id=updates_locator.package_id, branch=updates_locator.branch, version_guid=version, block_id=block
         )
         course_handouts_url = handouts_locator.url_reverse('xblock')
         content = u"Sample handout"
