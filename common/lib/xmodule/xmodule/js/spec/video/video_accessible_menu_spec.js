@@ -40,7 +40,10 @@
                     expect(activeMenuItem.length).toBe(1);
 
                     expect(activeMenuItem.children('a.menu-item-link'))
-                        .toHaveData('value', '.txt');
+                        .toHaveData('value', 'srt');
+
+                    expect(activeMenuItem.children('a.menu-item-link'))
+                        .toHaveHtml('SubRip (.srt) file');
 
                     /* TO DO: Check that all the anchors contain correct text.
                     $.each(li.toArray().reverse(), function (index, link) {
@@ -56,18 +59,20 @@
 
                 it('add ARIA attributes to button, menu, and menu items links',
                    function () {
-                        expect(button).toHaveAttrs({
-                            'role': 'button',
-                            'title': '.srt',
-                            'aria-disabled': 'false'
-                        });
+                    expect(button).toHaveAttrs({
+                        'role': 'button',
+                        'title': '.srt',
+                        'aria-disabled': 'false'
+                    });
 
-                        expect(menu).toHaveAttr('role', 'menu');
+                    expect(menu).toHaveAttr('role', 'menu');
 
-                        expect(menuItemsLinks).toHaveAttrs({
+                    menuItemsLinks.each(function(){
+                        expect($(this)).toHaveAttrs({
                             'role': 'menuitem',
                             'aria-disabled': 'false'
                         });
+                    });
                 });
             });
 

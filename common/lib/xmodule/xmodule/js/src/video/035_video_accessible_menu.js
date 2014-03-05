@@ -29,6 +29,7 @@ function () {
     function _initialize(state) {
         _makeFunctionsPublic(state);
         _renderElements(state);
+        _addAriaAttributes(state);
         _bindHandlers(state);
     }
 
@@ -52,6 +53,10 @@ function () {
     //     have to do repeated jQuery element selects.
     function _renderElements(state) {
 
+        // For the  time being, we assume that the menu structure is present in
+        // the template HTML. In the future accessible menu plugin, everything
+        // inside <div class='menu-container'></div> will be generated in this
+        // file.
         var container = state.el.find('li.video-tracks>div.menu-container'),
             button = container.children('a.menu-button'),
             menu = container.children('ol.menu'),
@@ -63,6 +68,22 @@ function () {
         state.videoAccessibleMenu.menu = menu;
         state.videoAccessibleMenu.menuItems = menuItems;
         state.videoAccessibleMenu.menuItemsLinks = menuItemsLinks;
+    }
+
+    function _addAriaAttributes(state) {
+        state.videoAccessibleMenu.button.attr({
+            'role': 'button',
+            'aria-disabled': 'false'
+        });
+
+        state.videoAccessibleMenu.menu.attr('role', 'menu');
+
+        state.videoAccessibleMenu.menuItemsLinks.each(function(){
+            $(this).attr({
+                'role': 'menuitem',
+                'aria-disabled': 'false'
+            });
+        });
     }
 
     // Hide accessible menu.
