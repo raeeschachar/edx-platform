@@ -102,11 +102,6 @@ def add_video_to_course(course, player_mode, hashes, display_name='Video'):
         'metadata': {},
     }
 
-    if player_mode == 'youtube_with_download':
-        kwargs['metadata'].update({
-            'download_track': True,
-        })
-
     if player_mode == 'html5':
         kwargs['metadata'].update({
             'youtube_id_1_0': '',
