@@ -37,8 +37,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1a\n"
 "Report-Msgid-Bugs-To: openedx-translation@googlegroups.com\n"
-"POT-Creation-Date: 2014-03-03 10:23-0500\n"
-"PO-Revision-Date: 2014-03-03 15:23:59.369070\n"
+"POT-Creation-Date: 2014-03-05 14:42+0000\n"
+"PO-Revision-Date: 2014-03-05 14:42:38.504819\n"
 "Last-Translator: \n"
 "Language-Team: openedx-translation <openedx-translation@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -5992,6 +5992,7 @@ msgstr ""
 " Ⱡ'σяєм ιρѕυм #"
 
 #: lms/templates/courseware/courseware-error.html
+#: lms/templates/courseware/error-message.html
 msgid ""
 "We're sorry, this module is temporarily unavailable. Our staff is working to"
 " fix it as soon as possible. Please email us at '<a "
