@@ -560,27 +560,10 @@ function (VideoPlayer) {
                 }, 'Video is fully loaded.', WAIT_TIMEOUT);
 
                 runs(function () {
-                    var htmlStr;
-
                     state.videoPlayer.goToStartTime = false;
                     state.videoPlayer.updatePlayTime(60);
 
-                    htmlStr = $('.vidtime').html();
-
-                    // We resort to this trickery because Firefox and Chrome
-                    // round the total time a bit differently.
-                    if (
-                        htmlStr.match('1:00 / 1:01') ||
-                        htmlStr.match('1:00 / 1:00')
-                    ) {
-                        expect(true).toBe(true);
-                    } else {
-                        expect(true).toBe(false);
-                    }
-
-                    // The below test has been replaced by above trickery:
-                    //
-                    //     expect($('.vidtime')).toHaveHtml('1:00 / 1:01');
+                    expect($('.vidtime')).toHaveHtml('1:00 / 1:00');
                 });
             });
 
